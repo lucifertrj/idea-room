@@ -7,6 +7,7 @@ import {demoTurn} from '../lib/demo-dialogue';
 import {Dialog,DialogContent,DialogTitle,DialogDescription} from '../components/ui/dialog';
 import World from '../components/game/World';
 import ConversationPanel from '../components/chat/ConversationPanel';
+import ThemeSelector from '../components/ui/ThemeSelector';
 import {Conversation} from '../lib/conversation';
 import {COMMONS,roomDestinations,useWorldStore} from '../lib/world-store';
 const icons={Clapperboard,Code2,Flag,Scissors,Compass,Gamepad2,Headphones};
@@ -49,7 +50,7 @@ export default function Home(){
  function save(r:Room,text:string,person?:Member){setNotes(n=>[...n,{room:r.name+(person?` · Private with ${person.name}`:' · Room discussion'),text}]);setTab('notes');}
  function download(text:string,name:string){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/markdown'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
  return <main className="app"><aside className="rail"><a className="brand" href="/" aria-label="Idea Quest home"><Flame size={26}/></a><button title="The clubhouse" aria-label="The clubhouse" className={tab==='world'?'selected':''} onClick={()=>setTab('world')}><Map/></button><button title="Notebook" aria-label="Notebook" className={tab==='notes'?'selected':''} onClick={()=>setTab('notes')}><BookOpen/>{notes.length>0&&<i/>}</button><div className="rail-bottom"><span className="profile">T</span></div></aside>
- <div className="workspace"><header><div className="wordmark">idea<span>quest</span><span className="alpha">EARLY ACCESS</span></div><div className="header-right"><span className="mode">{live?'LIVE TEAMS':'GUIDED DEMO'}</span><span className="profile small">T</span></div></header>
+ <div className="workspace"><header><div className="wordmark">idea<span>quest</span><span className="alpha">EARLY ACCESS</span></div><div className="header-right"><ThemeSelector/><span className="mode">{live?'LIVE TEAMS':'GUIDED DEMO'}</span><span className="profile small">T</span></div></header>
  <div className="page-heading"><div><div className="eyebrow">Click to wander. Choose a room. Meet six minds that think differently to brainstrom ideas.</div><h1>{tab==='notes'?'Your idea notebook.':'Who’s on your next idea team?'}</h1></div><div className="visited"><Sparkles size={15}/><b>{visited.length}<span> / 7</span></b><span>rooms explored</span></div></div>
  {tab==='notes'?<div className="notebook"><button className="back" onClick={()=>setTab('world')}><ArrowLeft size={16}/> Back to the clubhouse</button>{notes.length===0?<div className="empty-notes"><BookOpen size={36}/><h2>A place for your next big thing.</h2><p>Enter a room and save a conversation to keep it here for this visit.</p></div>:notes.map((n,i)=><article key={i}><h2>{n.room}<button onClick={()=>download(n.text,`idea-quest-${i+1}.md`)}><Download size={18}/> Export</button></h2><pre>{n.text}</pre></article>)}</div>:
  <div className="main-grid"><section className="world"><div className="world-title"><div><span className="tiny-square"/> THE CLUBHOUSE <span className="floor">/ FLOOR 01</span></div><span>7 rooms · 42 personalities</span></div>
