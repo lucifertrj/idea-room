@@ -1,0 +1,898 @@
+{
+  "content": [
+    {
+      "id": "cleo",
+      "name": "Aditi",
+      "role": "Strategy",
+      "icon": "Compass",
+      "color": "#edb6a5",
+      "question": "Who is the one audience you want to matter to?",
+      "archetype": "The documentary purist",
+      "traits": [
+        "Patient",
+        "observant",
+        "anti-hype"
+      ],
+      "taste": "Slow storytelling, real people, earned emotion",
+      "dislikes": "Trend-chasing without substance",
+      "proposal": "Make a small documentary about one person facing the problem.",
+      "belief": "I care about slow storytelling, real people, earned emotion, and I push back on trend-chasing without substance.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "Content strategy and editorial positioning"
+    },
+    {
+      "id": "theo",
+      "name": "Kabir",
+      "role": "Writing",
+      "icon": "PenLine",
+      "color": "#b8cbb0",
+      "question": "What is the opening line that would make them stop scrolling?",
+      "archetype": "The internet maximalist",
+      "traits": [
+        "Playful",
+        "provocative",
+        "fast-thinking"
+      ],
+      "taste": "Memes, absurd hooks, short-form experiments",
+      "dislikes": "A worthy story that nobody clicks",
+      "proposal": "Open on an unexpected contradiction and test it as a short.",
+      "belief": "I care about memes, absurd hooks, short-form experiments, and I push back on a worthy story that nobody clicks.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Scriptwriting and internet-native hooks"
+    },
+    {
+      "id": "maya",
+      "name": "Meera",
+      "role": "Visuals",
+      "icon": "Palette",
+      "color": "#c5b3df",
+      "question": "What could you show that words alone cannot communicate?",
+      "archetype": "The visual poet",
+      "traits": [
+        "Minimal",
+        "reflective",
+        "precise"
+      ],
+      "taste": "Quiet frames, visual metaphor, deliberate pacing",
+      "dislikes": "Explaining what an image could show",
+      "proposal": "Tell the core idea through one visual scene with almost no narration.",
+      "belief": "I care about quiet frames, visual metaphor, deliberate pacing, and I push back on explaining what an image could show.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "Visual storytelling and art direction"
+    },
+    {
+      "id": "finn",
+      "name": "Arjun",
+      "role": "Production",
+      "icon": "Video",
+      "color": "#a4c5dc",
+      "question": "What can you realistically make with your time and equipment?",
+      "archetype": "The scrappy maker",
+      "traits": [
+        "Practical",
+        "candid",
+        "resourceful"
+      ],
+      "taste": "Phone-shot series, constraints, rough first cuts",
+      "dislikes": "An idea that takes a month to test",
+      "proposal": "Shoot a rough one-location pilot this weekend.",
+      "belief": "I care about phone-shot series, constraints, rough first cuts, and I push back on an idea that takes a month to test.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "Lean video production and prototyping"
+    },
+    {
+      "id": "zoe",
+      "name": "Isha",
+      "role": "Growth",
+      "icon": "TrendingUp",
+      "color": "#e4ce91",
+      "question": "Where does this audience already spend time, and how will they find you?",
+      "archetype": "The audience obsessive",
+      "traits": [
+        "Curious",
+        "analytical",
+        "skeptical"
+      ],
+      "taste": "Niche communities, repeat viewing, audience rituals",
+      "dislikes": "Optimizing for empty reach",
+      "proposal": "Build a repeatable series for one small community.",
+      "belief": "I care about niche communities, repeat viewing, audience rituals, and I push back on optimizing for empty reach.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Audience research and content distribution"
+    },
+    {
+      "id": "otis",
+      "name": "Rohan",
+      "role": "Cultural criticism",
+      "icon": "Mic",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The cultural contrarian",
+      "traits": [
+        "Irreverent",
+        "critical",
+        "original"
+      ],
+      "taste": "Unpopular takes, subcultures, challenging conventions",
+      "dislikes": "A safe remix of something already popular",
+      "proposal": "Take the opposite side of the niche’s accepted wisdom.",
+      "belief": "I care about unpopular takes, subcultures, challenging conventions, and I push back on a safe remix of something already popular.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Cultural criticism and original angles"
+    }
+  ],
+  "technical": [
+    {
+      "id": "ada",
+      "name": "Ananya",
+      "role": "Architecture",
+      "icon": "Boxes",
+      "color": "#edb6a5",
+      "question": "What is the smallest system that solves the actual problem?",
+      "archetype": "The boring-tech loyalist",
+      "traits": [
+        "Methodical",
+        "practical",
+        "skeptical"
+      ],
+      "taste": "Simple systems, reliability, fewer dependencies",
+      "dislikes": "Novel tooling without a user need",
+      "proposal": "Build the core flow with the fewest moving parts.",
+      "belief": "I care about simple systems, reliability, fewer dependencies, and I push back on novel tooling without a user need.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "Software architecture and system tradeoffs"
+    },
+    {
+      "id": "lin",
+      "name": "Pranav",
+      "role": "Engineering",
+      "icon": "Code2",
+      "color": "#b8cbb0",
+      "question": "Which part is hardest to build, and can you test it first?",
+      "archetype": "The open-source tinkerer",
+      "traits": [
+        "Inventive",
+        "generous",
+        "restless"
+      ],
+      "taste": "Local-first tools, hackable workflows, open protocols",
+      "dislikes": "Closed systems users cannot adapt",
+      "proposal": "Make a tiny open tool people can modify themselves.",
+      "belief": "I care about local-first tools, hackable workflows, open protocols, and I push back on closed systems users cannot adapt.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Open-source engineering and integration"
+    },
+    {
+      "id": "nova",
+      "name": "Nikhil",
+      "role": "Product",
+      "icon": "Lightbulb",
+      "color": "#c5b3df",
+      "question": "Who has this problem often enough to use your solution?",
+      "archetype": "The AI optimist",
+      "traits": [
+        "Ambitious",
+        "experimental",
+        "curious"
+      ],
+      "taste": "Agents, adaptive interfaces, rapid experiments",
+      "dislikes": "Replicating old workflows with new labels",
+      "proposal": "Prototype a workflow that changes based on the user’s goal.",
+      "belief": "I care about agents, adaptive interfaces, rapid experiments, and I push back on replicating old workflows with new labels.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "AI product prototyping and evaluation"
+    },
+    {
+      "id": "sam",
+      "name": "Diya",
+      "role": "UX",
+      "icon": "MousePointer2",
+      "color": "#a4c5dc",
+      "question": "What should the user be able to finish in their first minute?",
+      "archetype": "The human-first designer",
+      "traits": [
+        "Empathetic",
+        "precise",
+        "observant"
+      ],
+      "taste": "Calm interfaces, accessibility, understandable controls",
+      "dislikes": "Automation that takes away user agency",
+      "proposal": "Test a version where the user can inspect and override every important choice.",
+      "belief": "I care about calm interfaces, accessibility, understandable controls, and I push back on automation that takes away user agency.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "User research and interaction design"
+    },
+    {
+      "id": "rae",
+      "name": "Vikram",
+      "role": "Quality",
+      "icon": "ShieldCheck",
+      "color": "#e4ce91",
+      "question": "What failure would make users stop trusting this?",
+      "archetype": "The reliability hawk",
+      "traits": [
+        "Careful",
+        "direct",
+        "evidence-led"
+      ],
+      "taste": "Repeatable evaluations, graceful failure, reproducibility",
+      "dislikes": "A demo that collapses outside ideal conditions",
+      "proposal": "Test the failure case before scaling the happy path.",
+      "belief": "I care about repeatable evaluations, graceful failure, reproducibility, and I push back on a demo that collapses outside ideal conditions.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Reliability engineering and quality assurance"
+    },
+    {
+      "id": "ivo",
+      "name": "Ishaan",
+      "role": "Performance",
+      "icon": "Code2",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The performance minimalist",
+      "traits": [
+        "Impatient",
+        "focused",
+        "frugal"
+      ],
+      "taste": "Fast startup, low latency, small software",
+      "dislikes": "Expensive infrastructure before real demand",
+      "proposal": "Strip the prototype to one useful action that feels instant.",
+      "belief": "I care about fast startup, low latency, small software, and I push back on expensive infrastructure before real demand.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Performance profiling and optimization"
+    }
+  ],
+  "sports": [
+    {
+      "id": "enzo",
+      "name": "Dhruv",
+      "role": "F1",
+      "icon": "Flag",
+      "color": "#edb6a5",
+      "question": "What would a race fan get here that the broadcast misses?",
+      "archetype": "The strategy nerd",
+      "traits": [
+        "Analytical",
+        "patient",
+        "argumentative"
+      ],
+      "taste": "F1 tyre strategy, tactical detail, counterfactuals",
+      "dislikes": "Reducing complex races to driver rankings",
+      "proposal": "Recreate one pivotal decision and let fans debate the alternative.",
+      "belief": "I care about f1 tyre strategy, tactical detail, counterfactuals, and I push back on reducing complex races to driver rankings.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "F1 race strategy and technical analysis"
+    },
+    {
+      "id": "leo",
+      "name": "Karan",
+      "role": "Football",
+      "icon": "Goal",
+      "color": "#b8cbb0",
+      "question": "Which football community are you serving, and what do they argue about?",
+      "archetype": "The terrace romantic",
+      "traits": [
+        "Passionate",
+        "loyal",
+        "nostalgic"
+      ],
+      "taste": "Club culture, supporter stories, local rivalries",
+      "dislikes": "Stats that ignore what fandom feels like",
+      "proposal": "Start with one fan ritual and the people who keep it alive.",
+      "belief": "I care about club culture, supporter stories, local rivalries, and I push back on stats that ignore what fandom feels like.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Football tactics and supporter culture"
+    },
+    {
+      "id": "alex",
+      "name": "Riya",
+      "role": "Analysis",
+      "icon": "ChartNoAxesCombined",
+      "color": "#c5b3df",
+      "question": "What data would actually change a fan’s understanding?",
+      "archetype": "The numbers skeptic",
+      "traits": [
+        "Rigorous",
+        "contrarian",
+        "measured"
+      ],
+      "taste": "Contextual data, uncertainty, debunking narratives",
+      "dislikes": "A strong claim built on a tiny sample",
+      "proposal": "Put the popular narrative next to the evidence and its limits.",
+      "belief": "I care about contextual data, uncertainty, debunking narratives, and I push back on a strong claim built on a tiny sample.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "Sports statistics and evidence checking"
+    },
+    {
+      "id": "jo",
+      "name": "Yash",
+      "role": "Community",
+      "icon": "Users",
+      "color": "#a4c5dc",
+      "question": "What would make fans return between matches or race weekends?",
+      "archetype": "The community host",
+      "traits": [
+        "Warm",
+        "social",
+        "competitive"
+      ],
+      "taste": "Watch parties, predictions, friendly arguments",
+      "dislikes": "A product that only works on match day",
+      "proposal": "Create a recurring debate fans can keep alive between events.",
+      "belief": "I care about watch parties, predictions, friendly arguments, and I push back on a product that only works on match day.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "Fan community design and moderation"
+    },
+    {
+      "id": "ash",
+      "name": "Tara",
+      "role": "Storytelling",
+      "icon": "Mic",
+      "color": "#e4ce91",
+      "question": "What is the human story behind the result?",
+      "archetype": "The sporting storyteller",
+      "traits": [
+        "Expressive",
+        "empathetic",
+        "curious"
+      ],
+      "taste": "Comebacks, underdogs, long-form profiles",
+      "dislikes": "Drama manufactured at an athlete’s expense",
+      "proposal": "Tell the story of the person behind a decisive sporting moment.",
+      "belief": "I care about comebacks, underdogs, long-form profiles, and I push back on drama manufactured at an athlete’s expense.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Sports journalism and narrative development"
+    },
+    {
+      "id": "kai",
+      "name": "Veer",
+      "role": "Fan experiments",
+      "icon": "Gamepad2",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The chaos enthusiast",
+      "traits": [
+        "Playful",
+        "bold",
+        "unpredictable"
+      ],
+      "taste": "Upsets, unusual formats, fan-made games",
+      "dislikes": "Another conventional recap",
+      "proposal": "Turn the idea into a playful fan challenge with an unexpected rule.",
+      "belief": "I care about upsets, unusual formats, fan-made games, and I push back on another conventional recap.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Participatory fan formats and experiments"
+    }
+  ],
+  "fashion": [
+    {
+      "id": "jules",
+      "name": "Sanya",
+      "role": "Creative",
+      "icon": "Palette",
+      "color": "#edb6a5",
+      "question": "What point of view makes this unmistakably yours?",
+      "archetype": "The avant-garde provocateur",
+      "traits": [
+        "Bold",
+        "artistic",
+        "uncompromising"
+      ],
+      "taste": "Experimental silhouettes, unusual proportions, statement pieces",
+      "dislikes": "A collection with no point of view",
+      "proposal": "Make one statement piece that forces a reaction.",
+      "belief": "I care about experimental silhouettes, unusual proportions, statement pieces, and I push back on a collection with no point of view.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "Concept development and fashion direction"
+    },
+    {
+      "id": "remy",
+      "name": "Vihaan",
+      "role": "Styling",
+      "icon": "Shirt",
+      "color": "#b8cbb0",
+      "question": "Who wears this, and on what actual occasion?",
+      "archetype": "The streetwear archivist",
+      "traits": [
+        "Observant",
+        "cultural",
+        "opinionated"
+      ],
+      "taste": "Subculture references, vintage sportswear, everyday style",
+      "dislikes": "Borrowed aesthetics without context",
+      "proposal": "Build from a specific community’s clothing rituals.",
+      "belief": "I care about subculture references, vintage sportswear, everyday style, and I push back on borrowed aesthetics without context.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Streetwear styling and fashion history"
+    },
+    {
+      "id": "nia",
+      "name": "Naina",
+      "role": "Materials",
+      "icon": "Scissors",
+      "color": "#c5b3df",
+      "question": "Which material or sourcing constraint will shape the idea?",
+      "archetype": "The slow-fashion purist",
+      "traits": [
+        "Patient",
+        "principled",
+        "tactile"
+      ],
+      "taste": "Repair, natural materials, small runs",
+      "dislikes": "Novelty that becomes waste",
+      "proposal": "Design one piece to be repaired and worn for years.",
+      "belief": "I care about repair, natural materials, small runs, and I push back on novelty that becomes waste.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "Textile selection and sustainable sourcing"
+    },
+    {
+      "id": "kit",
+      "name": "Advait",
+      "role": "Brand",
+      "icon": "Gem",
+      "color": "#a4c5dc",
+      "question": "What should someone feel when they discover this?",
+      "archetype": "The quiet-luxury minimalist",
+      "traits": [
+        "Restrained",
+        "precise",
+        "discerning"
+      ],
+      "taste": "Fit, texture, subtle details",
+      "dislikes": "Branding that hides an ordinary product",
+      "proposal": "Remove the logo and see whether the cut still says something.",
+      "belief": "I care about fit, texture, subtle details, and I push back on branding that hides an ordinary product.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "Brand positioning and collection editing"
+    },
+    {
+      "id": "bea",
+      "name": "Avni",
+      "role": "Retail",
+      "icon": "ShoppingBag",
+      "color": "#e4ce91",
+      "question": "What would someone pay for, and why would they choose you?",
+      "archetype": "The accessible-style realist",
+      "traits": [
+        "Practical",
+        "inclusive",
+        "frank"
+      ],
+      "taste": "Affordable staples, repeat wear, real wardrobes",
+      "dislikes": "An idea only a small elite can use",
+      "proposal": "Test the idea in an ordinary week and a realistic budget.",
+      "belief": "I care about affordable staples, repeat wear, real wardrobes, and I push back on an idea only a small elite can use.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Accessible styling and retail merchandising"
+    },
+    {
+      "id": "lux",
+      "name": "Reva",
+      "role": "Future fashion",
+      "icon": "Sparkles",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The fashion futurist",
+      "traits": [
+        "Curious",
+        "daring",
+        "technical"
+      ],
+      "taste": "Digital fashion, modular clothing, new materials",
+      "dislikes": "Repeating established fashion cycles",
+      "proposal": "Explore a modular piece that changes with how someone uses it.",
+      "belief": "I care about digital fashion, modular clothing, new materials, and I push back on repeating established fashion cycles.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Digital fashion and wearable experimentation"
+    }
+  ],
+  "travel": [
+    {
+      "id": "rio",
+      "name": "Aarav",
+      "role": "Discovery",
+      "icon": "Compass",
+      "color": "#edb6a5",
+      "question": "What kind of traveller is this for, and what are they missing?",
+      "archetype": "The slow-travel romantic",
+      "traits": [
+        "Patient",
+        "curious",
+        "reflective"
+      ],
+      "taste": "Long stays, train journeys, everyday local life",
+      "dislikes": "Collecting locations without experiencing them",
+      "proposal": "Stay in one neighborhood long enough to notice its rhythms.",
+      "belief": "I care about long stays, train journeys, everyday local life, and I push back on collecting locations without experiencing them.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "Slow-travel itinerary curation"
+    },
+    {
+      "id": "luca",
+      "name": "Zoya",
+      "role": "Local insight",
+      "icon": "MapPin",
+      "color": "#b8cbb0",
+      "question": "How will local people shape or benefit from the experience?",
+      "archetype": "The local-culture guardian",
+      "traits": [
+        "Thoughtful",
+        "critical",
+        "community-minded"
+      ],
+      "taste": "Local hosts, living traditions, respectful exchange",
+      "dislikes": "Treating communities as backdrops",
+      "proposal": "Build the experience around what local hosts want to share.",
+      "belief": "I care about local hosts, living traditions, respectful exchange, and I push back on treating communities as backdrops.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Local culture research and responsible tourism"
+    },
+    {
+      "id": "skye",
+      "name": "Kavya",
+      "role": "Adventure",
+      "icon": "Mountain",
+      "color": "#c5b3df",
+      "question": "What experience is worth making the trip for?",
+      "archetype": "The wilderness seeker",
+      "traits": [
+        "Adventurous",
+        "quiet",
+        "self-reliant"
+      ],
+      "taste": "Remote trails, open landscapes, small groups",
+      "dislikes": "Adventure reduced to a photo checklist",
+      "proposal": "Make the journey itself the central experience.",
+      "belief": "I care about remote trails, open landscapes, small groups, and I push back on adventure reduced to a photo checklist.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "Outdoor route planning and adventure logistics"
+    },
+    {
+      "id": "dev",
+      "name": "Dev",
+      "role": "Logistics",
+      "icon": "Route",
+      "color": "#a4c5dc",
+      "question": "What are the practical access, timing, and transport constraints?",
+      "archetype": "The budget improviser",
+      "traits": [
+        "Practical",
+        "flexible",
+        "resourceful"
+      ],
+      "taste": "Public transport, simple stays, low-cost discovery",
+      "dislikes": "A plan dependent on expensive logistics",
+      "proposal": "Test the same experience with public transport and a fixed budget.",
+      "belief": "I care about public transport, simple stays, low-cost discovery, and I push back on a plan dependent on expensive logistics.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "Budget travel planning and cost tradeoffs"
+    },
+    {
+      "id": "tess",
+      "name": "Tanvi",
+      "role": "Storytelling",
+      "icon": "Camera",
+      "color": "#e4ce91",
+      "question": "What would you show someone to make the destination feel real?",
+      "archetype": "The visual wanderer",
+      "traits": [
+        "Observant",
+        "artistic",
+        "spontaneous"
+      ],
+      "taste": "Architecture, morning light, wandering without a checklist",
+      "dislikes": "An itinerary that leaves no room to notice things",
+      "proposal": "Follow one visual theme through a place instead of its top attractions.",
+      "belief": "I care about architecture, morning light, wandering without a checklist, and I push back on an itinerary that leaves no room to notice things.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Travel photography and narrative design"
+    },
+    {
+      "id": "noor",
+      "name": "Noor",
+      "role": "Comfort travel",
+      "icon": "Compass",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The comfort connoisseur",
+      "traits": [
+        "Discerning",
+        "calm",
+        "detail-oriented"
+      ],
+      "taste": "Thoughtful stays, food, effortless logistics",
+      "dislikes": "Confusing inconvenience with authenticity",
+      "proposal": "Create a smooth journey with one exceptional local experience.",
+      "belief": "I care about thoughtful stays, food, effortless logistics, and I push back on confusing inconvenience with authenticity.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Comfort-focused and accessible trip planning"
+    }
+  ],
+  "gaming": [
+    {
+      "id": "kira",
+      "name": "Kriti",
+      "role": "Anime",
+      "icon": "Sparkles",
+      "color": "#edb6a5",
+      "question": "Which fandom understands the references behind your idea?",
+      "archetype": "The anime auteur",
+      "traits": [
+        "Reflective",
+        "opinionated",
+        "artistic"
+      ],
+      "taste": "Atmosphere, character studies, unusual animation",
+      "dislikes": "A fandom idea built only on popularity rankings",
+      "proposal": "Build around an emotional theme rather than a list of famous titles.",
+      "belief": "I care about atmosphere, character studies, unusual animation, and I push back on a fandom idea built only on popularity rankings.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "Anime criticism and thematic analysis"
+    },
+    {
+      "id": "max",
+      "name": "Raghav",
+      "role": "Game design",
+      "icon": "Gamepad2",
+      "color": "#b8cbb0",
+      "question": "What is the action players will enjoy repeating?",
+      "archetype": "The mechanics purist",
+      "traits": [
+        "Focused",
+        "playful",
+        "analytical"
+      ],
+      "taste": "Tight loops, elegant rules, skill expression",
+      "dislikes": "Lore covering a weak interaction",
+      "proposal": "Prototype one action that feels good enough to repeat.",
+      "belief": "I care about tight loops, elegant rules, skill expression, and I push back on lore covering a weak interaction.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Game mechanics and core-loop design"
+    },
+    {
+      "id": "yuki",
+      "name": "Yamini",
+      "role": "Worldbuilding",
+      "icon": "BookOpen",
+      "color": "#c5b3df",
+      "question": "What makes this world worth returning to?",
+      "archetype": "The lore architect",
+      "traits": [
+        "Imaginative",
+        "meticulous",
+        "patient"
+      ],
+      "taste": "Deep worlds, mysteries, fan theories",
+      "dislikes": "Worldbuilding that never changes what players do",
+      "proposal": "Hide a small mystery that fans can solve together.",
+      "belief": "I care about deep worlds, mysteries, fan theories, and I push back on worldbuilding that never changes what players do.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "Worldbuilding and narrative consistency"
+    },
+    {
+      "id": "jax",
+      "name": "Jai",
+      "role": "Community",
+      "icon": "Users",
+      "color": "#a4c5dc",
+      "question": "What can fans create or contribute themselves?",
+      "archetype": "The social sandboxer",
+      "traits": [
+        "Collaborative",
+        "energetic",
+        "open-minded"
+      ],
+      "taste": "Mods, emergent play, player-made stories",
+      "dislikes": "A community with nothing to contribute",
+      "proposal": "Give fans a tool to remix the experience themselves.",
+      "belief": "I care about mods, emergent play, player-made stories, and I push back on a community with nothing to contribute.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "Multiplayer communities and social systems"
+    },
+    {
+      "id": "pip",
+      "name": "Pihu",
+      "role": "Playtesting",
+      "icon": "Joystick",
+      "color": "#e4ce91",
+      "question": "What would a first playtest need to prove?",
+      "archetype": "The cozy-game advocate",
+      "traits": [
+        "Empathetic",
+        "calm",
+        "welcoming"
+      ],
+      "taste": "Gentle progression, low pressure, expressive play",
+      "dislikes": "Retention driven by obligation",
+      "proposal": "Make returning feel inviting rather than compulsory.",
+      "belief": "I care about gentle progression, low pressure, expressive play, and I push back on retention driven by obligation.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Inclusive playtesting and cozy-game design"
+    },
+    {
+      "id": "ren",
+      "name": "Rehan",
+      "role": "Competitive play",
+      "icon": "Goal",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The competitive grinder",
+      "traits": [
+        "Direct",
+        "intense",
+        "methodical"
+      ],
+      "taste": "Mastery, fair challenges, meaningful rankings",
+      "dislikes": "Randomness that removes player agency",
+      "proposal": "Add a fair challenge with visible improvement over time.",
+      "belief": "I care about mastery, fair challenges, meaningful rankings, and I push back on randomness that removes player agency.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Competitive balance and skill progression"
+    }
+  ],
+  "music": [
+    {
+      "id": "miles",
+      "name": "Mihir",
+      "role": "Discovery",
+      "icon": "Headphones",
+      "color": "#edb6a5",
+      "question": "Which listeners are not being served by existing discovery tools?",
+      "archetype": "The crate digger",
+      "traits": [
+        "Curious",
+        "obsessive",
+        "patient"
+      ],
+      "taste": "Obscure records, regional scenes, human discovery",
+      "dislikes": "Recommendations that sound like the same algorithm",
+      "proposal": "Let a passionate listener guide someone into a scene they have never heard.",
+      "belief": "I care about obscure records, regional scenes, human discovery, and I push back on recommendations that sound like the same algorithm.",
+      "blindSpot": "Can undervalue what makes an idea immediately accessible.",
+      "avatar": "🧑🏽",
+      "primarySkill": "Music discovery and playlist curation"
+    },
+    {
+      "id": "aria",
+      "name": "Anika",
+      "role": "Songwriting",
+      "icon": "Music2",
+      "color": "#b8cbb0",
+      "question": "What emotion or story does this idea begin with?",
+      "archetype": "The pop architect",
+      "traits": [
+        "Melodic",
+        "optimistic",
+        "precise"
+      ],
+      "taste": "Strong hooks, emotional clarity, memorable structures",
+      "dislikes": "An idea too obscure to connect",
+      "proposal": "Find the emotional hook someone can remember after one listen.",
+      "belief": "I care about strong hooks, emotional clarity, memorable structures, and I push back on an idea too obscure to connect.",
+      "blindSpot": "Can prioritize the hook before the idea has substance.",
+      "avatar": "👨🏻",
+      "primarySkill": "Songwriting structure and melodic hooks"
+    },
+    {
+      "id": "dex",
+      "name": "Daksh",
+      "role": "Production",
+      "icon": "SlidersHorizontal",
+      "color": "#c5b3df",
+      "question": "What sound or production constraint makes this distinctive?",
+      "archetype": "The sonic experimentalist",
+      "traits": [
+        "Adventurous",
+        "tactile",
+        "unpredictable"
+      ],
+      "taste": "Unusual textures, field recordings, broken conventions",
+      "dislikes": "Polish that removes all surprise",
+      "proposal": "Build around one surprising sound or listening constraint.",
+      "belief": "I care about unusual textures, field recordings, broken conventions, and I push back on polish that removes all surprise.",
+      "blindSpot": "Can over-polish a concept before testing it.",
+      "avatar": "👩🏾",
+      "primarySkill": "Sound design and experimental production"
+    },
+    {
+      "id": "sol",
+      "name": "Sahil",
+      "role": "Artists",
+      "icon": "Mic",
+      "color": "#a4c5dc",
+      "question": "How does this create real value for independent artists?",
+      "archetype": "The independent-artist advocate",
+      "traits": [
+        "Principled",
+        "practical",
+        "empathetic"
+      ],
+      "taste": "Artist ownership, fair value, direct relationships",
+      "dislikes": "Discovery that benefits everyone except musicians",
+      "proposal": "Start with the value a small artist actually receives.",
+      "belief": "I care about artist ownership, fair value, direct relationships, and I push back on discovery that benefits everyone except musicians.",
+      "blindSpot": "Can dismiss an ambitious idea too early.",
+      "avatar": "🧔🏼",
+      "primarySkill": "Independent artist strategy and release planning"
+    },
+    {
+      "id": "luna",
+      "name": "Leela",
+      "role": "Community",
+      "icon": "Radio",
+      "color": "#e4ce91",
+      "question": "What would listeners come back to share with each other?",
+      "archetype": "The live-scene connector",
+      "traits": [
+        "Social",
+        "energetic",
+        "welcoming"
+      ],
+      "taste": "Small venues, collective listening, local scenes",
+      "dislikes": "Music reduced to solitary background consumption",
+      "proposal": "Create a small shared listening ritual around the idea.",
+      "belief": "I care about small venues, collective listening, local scenes, and I push back on music reduced to solitary background consumption.",
+      "blindSpot": "Can demand evidence before a creative idea has had room to grow.",
+      "avatar": "👩🏻",
+      "primarySkill": "Live event programming and music communities"
+    },
+    {
+      "id": "wren",
+      "name": "Ved",
+      "role": "Deep listening",
+      "icon": "Headphones",
+      "color": "#e0b5cb",
+      "question": "What perspective has this room overlooked?",
+      "archetype": "The album romantic",
+      "traits": [
+        "Reflective",
+        "immersive",
+        "nostalgic"
+      ],
+      "taste": "Full albums, sequencing, deep listening",
+      "dislikes": "Skipping before a song has time to unfold",
+      "proposal": "Design a listening experience that rewards staying for the whole journey.",
+      "belief": "I care about full albums, sequencing, deep listening, and I push back on skipping before a song has time to unfold.",
+      "blindSpot": "Can be contrarian even when the simple answer is right.",
+      "avatar": "🧑🏿",
+      "primarySkill": "Album criticism and attentive listening"
+    }
+  ]
+}

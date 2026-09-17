@@ -1,0 +1,3 @@
+import {Compass,PenLine,Palette,Video,TrendingUp,Boxes,Code2,Lightbulb,MousePointer2,ShieldCheck,Flag,Goal,ChartNoAxesCombined,Users,Mic,Shirt,Scissors,Gem,ShoppingBag,MapPin,Mountain,Route,Camera,Sparkles,Gamepad2,BookOpen,Joystick,Headphones,Music2,SlidersHorizontal,Radio} from 'lucide-react';
+const icons={Compass,PenLine,Palette,Video,TrendingUp,Boxes,Code2,Lightbulb,MousePointer2,ShieldCheck,Flag,Goal,ChartNoAxesCombined,Users,Mic,Shirt,Scissors,Gem,ShoppingBag,MapPin,Mountain,Route,Camera,Sparkles,Gamepad2,BookOpen,Joystick,Headphones,Music2,SlidersHorizontal,Radio};
+export default function MemberIcon({name,size=18}:{name:string;size?:number}){const Icon=icons[name as keyof typeof icons]??Users;return <Icon size={size}/>;}

@@ -1,0 +1,5 @@
+agno>=2.6,<3
+openai>=2,<3
+exa-py>=2,<3
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
