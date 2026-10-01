@@ -4,7 +4,7 @@ A pixel-art clubhouse with seven rooms and six expert personalities per room. Us
 
 **Stack:** React + Vinext (Next.js App Router-compatible), Phaser, Zustand, FastAPI, Agno, and Exa.
 
-**Current architecture:** an Agno/OpenAI coordinator selects the relevant expert first, delegates follow-ups from the shared transcript, and stops when appropriate. No scripted chat responses. See [communication_flow.md](communication_flow.md) for routing and agent-to-agent communication.
+**Current architecture:** an Agno/OpenAI coordinator selects the relevant expert first, delegates follow-ups from the shared transcript, and stops when appropriate. Each expert is also exposed as a **formal A2A (Agent2Agent) agent**, and the active expert can consult one colleague directly over A2A within its turn. No scripted chat responses. See [communication_flow.md](communication_flow.md) for routing and agent-to-agent communication.
 
 ## Requirements
 
@@ -84,7 +84,7 @@ curl http://127.0.0.1:8000/health \
 Expected response:
 
 ```json
-{"ready":true,"search_enabled":true,"rooms":7,"team_chat":true,"dialogue_protocol":5}
+{"ready":true,"search_enabled":true,"rooms":7,"team_chat":true,"dialogue_protocol":5,"a2a_enabled":true,"a2a_cards":42}
 ```
 
 Then check the frontend proxy:
@@ -106,9 +106,32 @@ Readiness checks configuration, not provider credentials or quotas. A successful
 - `backend/skills/grilling/`: mandatory questioning workflow used by `grill-me`.
 - `backend/skills/to-questionnaire/`: questionnaire guidance, used on request.
 - `backend/app.py`: model, tools, persona instructions, and live responses.
+- `backend/a2a_server.py`: A2A agent cards, JSON-RPC `message/send`, and the expert consult tool.
 - `lib/conversation.ts`: turn coordination, queues, and pause/resume.
 
 Every expert receives both compulsory grilling skills, plus Exa when configured. Tool selection happens within its Agno run; completed public replies become context for the coordinator and next selected expert. Private histories stay separate.
+
+## A2A (agent-to-agent) communication
+
+Each expert is exposed as a formal [A2A (Agent2Agent)](https://a2a-protocol.org) agent via `backend/a2a_server.py` (built on the `a2a-sdk` pydantic types):
+
+- **Agent Card:** `GET /a2a/{room}/{member}/.well-known/agent-card.json`
+- **JSON-RPC `message/send`:** `POST /a2a/{room}/{member}` — returns a direct `agent`-role message (synchronous; no task lifecycle or streaming).
+
+During a group turn the coordinator-selected expert may consult **one** colleague directly over A2A (`ask_colleague(member_id, question)`), a real in-process JSON-RPC round-trip whose answer is folded into that expert's single reply and attributed in prose. Only the primary expert gets the consult tool (depth 1, no cycles), it is bounded to one consult per turn, and the consult uses minimal effort with a short timeout so the turn stays inside the request budget. All A2A endpoints require the same `Bearer AGNO_API_TOKEN` as `/chat`. Cards live under a per-expert path rather than a single root `.well-known`. See [communication_flow.md](communication_flow.md).
+
+Try it against the running backend (replace the token):
+
+```bash
+TOKEN=your-shared-token
+# Fetch an expert's Agent Card
+curl -s http://127.0.0.1:8000/a2a/content/cleo/.well-known/agent-card.json \
+  -H "Authorization: Bearer $TOKEN"
+# Send a message directly to one expert over A2A
+curl -s http://127.0.0.1:8000/a2a/content/cleo \
+  -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"kind":"message","role":"user","messageId":"u1","parts":[{"kind":"text","text":"One-line positioning for a solo documentary?"}]}}}'
+```
 
 ## Build and tests
 

@@ -7,8 +7,10 @@ import os
 from uuid import uuid4
 try:
     from .dialogue import MAX_TURNS, room_roster, turns_since_user, checked_transcript
+    from . import a2a_server as a2a_module
 except ImportError:
     from dialogue import MAX_TURNS, room_roster, turns_since_user, checked_transcript
+    import a2a_server as a2a_module
 from pathlib import Path
 from typing import Literal
 from fastapi import FastAPI, Header, HTTPException
@@ -51,9 +53,9 @@ class RoutingDecision(BaseModel):
     task: str = Field(max_length=2000)
     reply_to: str | None
 
-def openai_model(reasoning_effort: str | None = None, model_id: str | None = None):
+def openai_model(reasoning_effort: str | None = None, model_id: str | None = None, timeout: int = 40):
     settings = {'reasoning_effort': reasoning_effort} if reasoning_effort else {}
-    return OpenAIResponses(id=model_id or os.getenv('OPENAI_MODEL', 'gpt-5.6-luna'), timeout=40, max_retries=0, **settings)
+    return OpenAIResponses(id=model_id or os.getenv('OPENAI_MODEL', 'gpt-5.6-luna'), timeout=timeout, max_retries=0, **settings)
 
 def build_coordinator(room: str, roster: list[dict], mode: str):
     expertise = [{key: member[key] for key in ('id', 'name', 'role', 'primarySkill')} for member in roster]
@@ -84,16 +86,35 @@ def authenticate(authorization: str | None):
 @app.get('/health')
 async def health(authorization: str | None = Header(default=None)):
     authenticate(authorization)
-    return {'ready': bool(os.getenv('OPENAI_API_KEY')), 'search_enabled': bool(os.getenv('EXA_API_KEY')), 'rooms': len(TEAMS), 'team_chat': True, 'dialogue_protocol': 5}
+    return {'ready': bool(os.getenv('OPENAI_API_KEY')), 'search_enabled': bool(os.getenv('EXA_API_KEY')), 'rooms': len(TEAMS), 'team_chat': True, 'dialogue_protocol': 5, 'a2a_enabled': True, 'a2a_cards': sum(len(roster) for roster in TEAMS.values())}
 
-def build_agent(room: str, member: dict, mode: str):
+CONSULT_MODEL_TIMEOUT = 18
+
+def build_consulted_agent(room: str, member: dict):
+    """A lean peer agent used when another expert consults this one over A2A. No tools,
+    minimal effort, short timeout, and a crisp directive so the nested call stays cheap."""
     return Agent(
         name=member['name'],
-        model=openai_model(reasoning_effort=os.getenv('OPENAI_AGENT_EFFORT', 'low')),
+        model=openai_model(reasoning_effort='minimal', timeout=CONSULT_MODEL_TIMEOUT),
+        instructions=[
+            f"You are {member['name']}, the {member['role']} specialist in the {room} room ({member['primarySkill']}).",
+            f"Your personality: {member['archetype']}. Belief: {member['belief']}.",
+            'A colleague is consulting you over A2A — this is peer-to-peer, not the user. Give one focused, concrete answer from your expertise in 2-3 sentences. State uncertainty plainly. Do not ask the user questions and do not run an interview.',
+        ],
+        markdown=True,
+    )
+
+def build_agent(room: str, member: dict, mode: str, consult_tool=None):
+    tools = [ExaTools(enable_search=True, enable_get_contents=False,
+                      enable_find_similar=False, enable_answer=False,
+                      num_results=4, text_length_limit=1500)] if os.getenv('EXA_API_KEY') else []
+    if consult_tool:
+        tools.append(consult_tool)
+    return Agent(
+        name=member['name'],
+        model=openai_model(reasoning_effort=os.getenv('OPENAI_AGENT_EFFORT', 'low'), timeout=30 if consult_tool else 40),
         skills=skills,
-        tools=[ExaTools(enable_search=True, enable_get_contents=False,
-                       enable_find_similar=False, enable_answer=False,
-                       num_results=4, text_length_limit=1500)] if os.getenv('EXA_API_KEY') else [],
+        tools=tools,
         instructions=[
             f"You are {member['name']}, the {member['role']} specialist in the {room} room of a pixel-art clubhouse.",
             f"Your core expertise is {member['primarySkill']}. Contribute from this expertise, state uncertainty outside it, and invite the appropriate colleague when another specialty is needed.",
@@ -109,6 +130,7 @@ def build_agent(room: str, member: dict, mode: str):
             'Runtime adapter: upstream Skill calls mean get_skill_instructions. Grilling instructions are already loaded. No sub-agent tool is available: perform research with Exa. Return questionnaire Markdown for browser export, never write or send it.',
             ('Load to-questionnaire now. Establish recipient and missing answers in separate exchanges before drafting. Use prior answers from this conversation.' if mode == 'questionnaire' else 'Do not draft a questionnaire unless requested.'),
             'Use readable paragraphs. Consider only this room history; no other user or room context is available.',
+            *(['When a question falls squarely under a colleague\'s expertise, you MAY consult ONE of them directly over A2A by calling ask_colleague(member_id, question). Do this at most once and only when it genuinely sharpens your reply. Weave their answer into your single contribution, attributing it in prose (e.g. "I checked with Meera — she notes …"). Never fabricate a colleague\'s view, and still speak as yourself.'] if consult_tool else []),
         ],
         markdown=True,
     )
@@ -135,11 +157,16 @@ async def coordinated_turn(body, roster, transcript, count):
         if reference is None:
             raise ValueError('Invalid coordinator reply reference')
     history = [Message(role=m['role'], content=(f"[{m['speaker']}]\n" if m['role'] == 'assistant' else '[User]\n') + m['content']) for m in transcript]
-    agent = build_agent(body.room, member, body.mode)
+    consult_tool = None
+    if not body.member:
+        consult_tool = a2a_module.build_consult_tool(app, os.getenv('AGNO_API_TOKEN', ''), body.room, roster, member['id'])
+    agent = build_agent(body.room, member, body.mode, consult_tool=consult_tool)
     if body.member:
         agent.instructions.append('This is a private one-to-one conversation. Answer the user directly. You cannot see the room discussion; do not claim that you can.')
     else:
         agent.instructions.append(f'Coordinator assignment: {decision.task}')
+        colleagues = [{'id': m['id'], 'name': m['name'], 'primarySkill': m['primarySkill']} for m in roster if m['id'] != member['id']]
+        agent.instructions.append(f'Colleagues you may consult via ask_colleague: {json.dumps(colleagues)}')
         if reference:
             agent.instructions.append(f"Address {reference['speaker']}'s contribution: {reference['content']}")
         if count == MAX_TURNS - 1:
@@ -171,3 +198,14 @@ async def chat(body: ChatRequest, authorization: str | None = Header(default=Non
     except Exception as exc:
         logger.error('Agent request failed for room=%s error_type=%s', body.room, type(exc).__name__)
         raise HTTPException(502, 'The OpenAI agent could not respond. Check backend provider configuration and retry; previous messages are kept.') from exc
+
+async def run_consulted(room: str, member: dict, text: str) -> str:
+    """Run a consulted expert (no tools, minimal effort) for the A2A `message/send` path."""
+    if not os.getenv('OPENAI_API_KEY'):
+        raise RuntimeError('OpenAI credentials are not configured')
+    result = await build_consulted_agent(room, member).arun([Message(role='user', content=text)])
+    if not isinstance(result.content, str) or not result.content.strip():
+        raise ValueError('Invalid consulted response')
+    return result.content.strip()[:4000]
+
+app.include_router(a2a_module.create_router(authenticate, TEAMS, room_roster, run_consulted))

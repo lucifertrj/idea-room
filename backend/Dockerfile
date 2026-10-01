@@ -2,7 +2,7 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY app.py dialogue.py .
+COPY app.py dialogue.py a2a_server.py ./
 COPY team-data.json .
 COPY skills ./skills
 RUN useradd --create-home agent
