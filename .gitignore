@@ -48,5 +48,6 @@ next-env.d.ts
 !.env.example
 !backend/.env.example
 __pycache__/
+/backend/.venv/
 *.pyc
 *.tsbuildinfo

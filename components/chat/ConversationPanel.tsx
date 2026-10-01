@@ -3,13 +3,13 @@ import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {ArrowUp,BookOpen,CornerDownRight,Flame,Pause,Play,Users,X,Sparkles} from 'lucide-react';
 import {Conversation} from '../../lib/conversation';
 import {Room} from '../../lib/rooms';
-import {Member,teams,speakerAt} from '../../lib/teams';
+import {Member,teams} from '../../lib/teams';
+import Markdown from './Markdown';
 
 export default function ConversationPanel({engine,room,person,live,onProfile,onSave,onQuestionnaire}:{engine:Conversation;room:Room;person?:Member;live:boolean;onProfile:(person:Member)=>void;onSave:(text:string)=>void;onQuestionnaire?:()=>void}){
  const state=useSyncExternalStore(engine.subscribe,engine.snapshot,engine.snapshot);
  const [input,setInput]=useState('');
  const scroll=useRef<HTMLDivElement>(null);
- const actor=person??speakerAt(room.id,state.turn,state.round);
 
  useEffect(()=>{
   const el=scroll.current;
@@ -25,14 +25,14 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
  return <>
  {!person&&<div className="team-roster">
    <div className="roster-intro">
-     <span><Sparkles size={11} className="pixel-sparkle"/> ALL 6 PERSPECTIVES</span>
+     <span><Sparkles size={11} className="pixel-sparkle"/> 6 AVAILABLE EXPERTS</span>
      <span className="roster-sub">Select a mind to inspect</span>
    </div>
    <div className="specialists">
      {teams[room.id].map(m=>(
        <button
          key={m.id}
-         className={`member-card ${state.busy&&actor.id===m.id?'member-speaking':''}`}
+         className="member-card"
          aria-label={`Meet ${m.name}, ${m.archetype}; expert in ${m.primarySkill}`}
          onClick={()=>onProfile(m)}
        >
@@ -41,11 +41,7 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
          </span>
          <b className="member-name">{m.name}</b>
          <span className="member-specialty">{m.role}</span>
-         {state.busy&&actor.id===m.id ? (
-           <span className="member-speaking-tag">▶ TALKING</span>
-         ) : (
-           <small>{m.archetype.replace('The ','')}</small>
-         )}
+         <small>{m.archetype.replace('The ','')}</small>
        </button>
      ))}
    </div>
@@ -54,7 +50,6 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
  <div className="skill-row">
    <span className="pixel-skill"><Flame size={11}/> GRILL-ME</span>
    <span className="pixel-skill">GRILLING</span>
-   <span className={`pixel-skill ${!live?'muted':''}`}>EXA {live?'ONLINE':'READY'}</span>
  </div>
 
  <div className="messages" ref={scroll} role="log" aria-label={person?`Private messages with ${person.name}`:'Room discussion'} aria-live="polite">
@@ -75,7 +70,7 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
            )}
          </div>
          {m.replyToName&&<button className="reply-reference" onClick={()=>document.getElementById(`message-${m.replyTo}`)?.scrollIntoView({behavior:'smooth',block:'nearest'})}><CornerDownRight size={11}/> replying to {m.replyToName}</button>}
-         <p>{m.content}</p>
+         {isUser?<p>{m.content}</p>:<div className="markdown-body"><Markdown text={m.content}/></div>}
        </div>
      );
    })}
@@ -90,11 +85,11 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
      ))}
    </div>}
 
-   {state.busy&&<div className="thinking"><span className="cursor-blink">▶</span> {actor.name} is formulating a perspective <span className="pixel-pulse">…</span></div>}
+   {state.busy&&<div className="thinking"><span className="cursor-blink">▶</span> {person?`Waiting for ${person.name}`:'Coordinator is routing the discussion and awaiting an expert'} <span className="pixel-pulse">…</span></div>}
 
    {!state.busy&&state.messages.some(m=>m.role==='user')&&<div className="round-break">
      <span>{state.paused?'[PAUSED] Discussion awaiting input':'[YOUR MOVE] Steer the roundtable'}</span>
-     <button onClick={()=>engine.resume()} className="pixel-resume-btn"><Play size={11}/>{state.paused?'Resume':'Continue'}</button>
+     {state.paused&&<button onClick={()=>engine.resume()} className="pixel-resume-btn"><Play size={11}/>Resume</button>}
    </div>}
  </div>
 
@@ -104,6 +99,7 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
  </div>}
 
  {state.error&&<p className="error" role="alert">{state.error}</p>}
+ {state.routingReason&&<p className="routing-reason" role="status">Coordinator: {state.routingReason}</p>}
 
  <form className="composer" onSubmit={e=>{e.preventDefault();send();}}>
    <div className="reply-target">
@@ -130,7 +126,6 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
  {state.messages.length>=130&&!state.busy&&<button className="questionnaire" onClick={()=>{save();engine.reset();}}>Save & start a fresh discussion</button>}
 
  <div className="chat-footer">
-   <span className="live-status"><span className="led-dot"/> {live?'LIVE AGENT SYSTEM':'SIMULATED ENGINE'}</span>
    <button onClick={save} className="pixel-save-btn"><BookOpen size={12}/> EXPORT NOTE</button>
  </div>
 

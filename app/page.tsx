@@ -1,9 +1,9 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import {ArrowUpRight,BookOpen,Map,Flame,Sparkles,ArrowLeft,Download,Clapperboard,Code2,Flag,Scissors,Compass,Gamepad2,Headphones,X,Users,MousePointer2,Lock} from 'lucide-react';
-import {rooms,Room,Message} from '../lib/rooms';
-import {teams,threadKey,speakerAt,Member} from '../lib/teams';
-import {demoTurn} from '../lib/demo-dialogue';
+import {rooms,Room} from '../lib/rooms';
+import {teams,threadKey,Member} from '../lib/teams';
+import {chatResponseSchema} from '../lib/chat-protocol';
 import {Dialog,DialogContent,DialogTitle,DialogDescription} from '../components/ui/dialog';
 import World from '../components/game/World';
 import ConversationPanel from '../components/chat/ConversationPanel';
@@ -14,32 +14,32 @@ const icons={Clapperboard,Code2,Flag,Scissors,Compass,Gamepad2,Headphones};
 export default function Home(){
  const [active,setActive]=useState<Room|null>(null),[live,setLive]=useState(false),[tab,setTab]=useState('world'),[notes,setNotes]=useState<{room:string;text:string}[]>([]),[visited,setVisited]=useState<string[]>([]);
  const [profile,setProfile]=useState<{room:Room;person:Member}|null>(null),[privateChat,setPrivateChat]=useState<{room:Room;person:Member}|null>(null);
- const conversations=useRef<Record<string,Conversation>>({});const liveRef=useRef(live);liveRef.current=live;
+ const conversations=useRef<Record<string,Conversation>>({});
  const destination=useWorldStore(s=>s.destination),moving=useWorldStore(s=>s.moving);
  const walkingTo=destination?.roomId?rooms.find(r=>r.id===destination.roomId):null;
- useEffect(()=>{fetch('/api/chat').then(r=>r.json()).then(d=>setLive((d as {live:boolean}).live)).catch(()=>{});return()=>{Object.values(conversations.current).forEach(c=>c.pause());};},[]);
+ useEffect(()=>{
+  let mounted=true;
+  const refresh=()=>{void fetch('/api/chat').then(r=>r.json()).then(d=>{if(mounted)setLive((d as {live:boolean}).live===true);}).catch(()=>{if(mounted)setLive(false);});};
+  refresh();const interval=setInterval(refresh,15000);const threads=conversations.current;
+  return()=>{mounted=false;clearInterval(interval);Object.values(threads).forEach(c=>c.pause());};
+ },[]);
  function discussion(r:Room,person?:Member){
   const key=threadKey(r.id,person?.id);
   if(!conversations.current[key]){
-   const cast=person?[person]:teams[r.id];
-   const initial:Message[]=cast.map(m=>({id:crypto.randomUUID(),role:'assistant',speaker:m.name,memberId:m.id,content:person?`Just the two of us. ${m.belief} What would you like to work through?`:`I’m ${m.name}, ${m.archetype.toLowerCase()}. ${m.belief}`}));
-   let questionnaireStep=0,recipient='';
-   conversations.current[key]=new Conversation(initial,person?1:8,async({messages,turn,round,signal})=>{
-    const actor=person??speakerAt(r.id,turn,round);
-    const latest=[...messages].reverse().find(m=>m.role==='user')?.content??'';
-    const questionnaire=!!person&&(latest.startsWith('/to-questionnaire')||questionnaireStep===1||questionnaireStep===2);
-    const advance=()=>{if(latest.startsWith('/to-questionnaire'))questionnaireStep=1;else if(questionnaireStep===1){recipient=latest;questionnaireStep=2;}else if(questionnaireStep===2)questionnaireStep=3;};
-    if(liveRef.current){
+   conversations.current[key]=new Conversation([],person?1:8,async({messages,turn,round,signal})=>{
+    const questionnaire=!!person&&messages.some(message=>message.role==='user'&&message.content.startsWith('/to-questionnaire'));
+    try{
      const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({room:r.id,member:person?.id??null,mode:questionnaire?'questionnaire':'chat',turn,round,messages})});
-     const result=await res.json() as {error?:string;replies?:Message[]};
-     if(!res.ok||!result.replies?.length)throw new Error(result.error??'This turn could not finish. Resume to retry.');
-     const reply=result.replies[0];
-     if(reply.memberId!==actor.id||reply.speaker!==actor.name)throw new Error('The agent service needs the latest room personalities.');
-     if(questionnaire)advance();return reply;
+     const payload=await res.json();
+     if(!res.ok)throw new Error(payload&&typeof payload==='object'&&'error' in payload&&typeof payload.error==='string'?payload.error:'The agent service could not respond. Resume to retry.');
+     const result=chatResponseSchema.parse(payload);
+     const cast=person?[person]:teams[r.id];
+     if(result.replies.some(reply=>!cast.some(member=>member.id===reply.memberId&&member.name===reply.speaker)))throw new Error('Invalid agent identity returned by the server.');
+     setLive(true);return result;
+    }catch(error){
+     if(!signal.aborted)setLive(false);
+     throw error;
     }
-    await new Promise<void>(resolve=>{const finish=()=>{clearTimeout(timer);signal.removeEventListener('abort',finish);resolve();};const timer=setTimeout(finish,1400);signal.addEventListener('abort',finish,{once:true});});
-    if(questionnaire){const content=latest.startsWith('/to-questionnaire')?'Who should answer this questionnaire? Tell me their role and expertise.':questionnaireStep===1?'What facts or decisions do you need back from them?':`DISCOVERY QUESTIONNAIRE\n\nFor: ${recipient}\nUnknowns: ${latest}\n\n1. What can you tell us about these unknowns?\nAnswer:\n\n2. What evidence supports that?\nAnswer:\n\n3. What constraints or risks could change the decision?\nAnswer:\n\n4. What have we missed?\nAnswer:\n\nPlease flag guesses and uncertainty. Save and export this demo template to adapt it.`;if(!signal.aborted)advance();return {id:crypto.randomUUID(),role:'assistant',speaker:actor.name,memberId:actor.id,content} as Message;}
-    return demoTurn(actor,messages,turn,!!person);
    });
   }
   return conversations.current[key];
@@ -50,7 +50,7 @@ export default function Home(){
  function save(r:Room,text:string,person?:Member){setNotes(n=>[...n,{room:r.name+(person?` · Private with ${person.name}`:' · Room discussion'),text}]);setTab('notes');}
  function download(text:string,name:string){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/markdown'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
  return <main className="app"><aside className="rail"><a className="brand" href="/" aria-label="Idea Quest home"><Flame size={26}/></a><button title="The clubhouse" aria-label="The clubhouse" className={tab==='world'?'selected':''} onClick={()=>setTab('world')}><Map/></button><button title="Notebook" aria-label="Notebook" className={tab==='notes'?'selected':''} onClick={()=>setTab('notes')}><BookOpen/>{notes.length>0&&<i/>}</button><div className="rail-bottom"><span className="profile">T</span></div></aside>
- <div className="workspace"><header><div className="wordmark">idea<span>quest</span><span className="alpha">EARLY ACCESS</span></div><div className="header-right"><ThemeSelector/><span className="mode">{live?'LIVE TEAMS':'GUIDED DEMO'}</span><span className="profile small">T</span></div></header>
+ <div className="workspace"><header><div className="wordmark">idea<span>quest</span><span className="alpha">EARLY ACCESS</span></div><div className="header-right"><ThemeSelector/><span className="profile small">T</span></div></header>
  <div className="page-heading"><div><div className="eyebrow">Click to wander. Choose a room. Meet six minds that think differently to brainstrom ideas.</div><h1>{tab==='notes'?'Your idea notebook.':'Who’s on your next idea team?'}</h1></div><div className="visited"><Sparkles size={15}/><b>{visited.length}<span> / 7</span></b><span>rooms explored</span></div></div>
  {tab==='notes'?<div className="notebook"><button className="back" onClick={()=>setTab('world')}><ArrowLeft size={16}/> Back to the clubhouse</button>{notes.length===0?<div className="empty-notes"><BookOpen size={36}/><h2>A place for your next big thing.</h2><p>Enter a room and save a conversation to keep it here for this visit.</p></div>:notes.map((n,i)=><article key={i}><h2>{n.room}<button onClick={()=>download(n.text,`idea-quest-${i+1}.md`)}><Download size={18}/> Export</button></h2><pre>{n.text}</pre></article>)}</div>:
  <div className="main-grid"><section className="world"><div className="world-title"><div><span className="tiny-square"/> THE CLUBHOUSE <span className="floor">/ FLOOR 01</span></div><span>7 rooms · 42 personalities</span></div>
@@ -65,10 +65,10 @@ export default function Home(){
  <><div className="welcome-top"><span className="room-tag">YOU’RE IN THE COMMONS</span><h2>Choose your room.</h2><p>Six personalities are waiting in every room.<br/>Where do you want to take your idea?</p></div>
  {walkingTo&&<div className="walking-status" role="status"><span>Walking to {walkingTo.name}…</span><button onClick={()=>useWorldStore.getState().moveTo(null)}>Cancel</button></div>}
  <div className="room-chooser">{rooms.map(r=>{const Icon=icons[r.icon];return <button key={r.id} onClick={()=>enter(r)}><span className="chooser-icon" style={{background:r.color}}><Icon size={20}/></span><span><b>{r.short}</b><small>{teams[r.id].map(m=>m.name).join(', ')}</small></span><ArrowUpRight size={16}/></button>})}</div>
- <div className="welcome-note"><MousePointer2 size={17}/><span>Click the floor to explore freely.<br/>Join a room to listen, debate, and shape the idea.</span></div><div className="demo-note">{live?'Live teams connected':'Scripted walkthrough available now. Connect the Agno service for live agent-to-agent discussion.'}</div></>}
+ <div className="welcome-note"><MousePointer2 size={17}/><span>Click the floor to explore freely.<br/>Join a room to listen, debate, and shape the idea.</span></div>{!live&&<div className="demo-note">Live chat is currently unavailable. Please try again shortly.</div>}</>}
  </aside></div>}
  <footer><span><span className="footer-star">✦</span> YOUR IDEA. YOUR TEAM. YOUR CALL.</span><span>Six minds. Different tastes. One shared conversation.</span><span>IDEA QUEST <b>v0.4</b></span></footer></div>
- <Dialog open={!!profile} onOpenChange={open=>{if(!open)setProfile(null);}}><DialogContent className="personality-dialog">{profile&&<><div className="personality-identity"><span className="portrait" style={{background:profile.person.color}}>{profile.person.avatar}</span><div><span className="profile-room">{profile.room.short}</span><DialogTitle>{profile.person.name}</DialogTitle><DialogDescription>{profile.person.archetype}</DialogDescription></div></div><div className="trait-tags">{profile.person.traits.map(t=><span key={t}>{t}</span>)}</div><blockquote>“{profile.person.belief}”</blockquote><dl><dt>Core expertise</dt><dd>{profile.person.primarySkill}</dd><dt>Drawn to</dt><dd>{profile.person.taste}</dd><dt>Pushes back on</dt><dd>{profile.person.dislikes}</dd><dt>Blind spot</dt><dd>{profile.person.blindSpot}</dd></dl><div className="profile-skills">Every personality uses grill-me, grilling, and Exa when live.</div><div className="profile-actions"><button onClick={()=>{const p=profile;setProfile(null);enter(p.room);}}><Users size={16}/> Join room discussion</button><button className="private-action" onClick={()=>{const p=profile;setProfile(null);setPrivateChat(p);}}><Lock size={15}/> Talk privately</button></div></>}</DialogContent></Dialog>
+ <Dialog open={!!profile} onOpenChange={open=>{if(!open)setProfile(null);}}><DialogContent className="personality-dialog">{profile&&<><div className="personality-identity"><span className="portrait" style={{background:profile.person.color}}>{profile.person.avatar}</span><div><span className="profile-room">{profile.room.short}</span><DialogTitle>{profile.person.name}</DialogTitle><DialogDescription>{profile.person.archetype}</DialogDescription></div></div><div className="trait-tags">{profile.person.traits.map(t=><span key={t}>{t}</span>)}</div><blockquote>“{profile.person.belief}”</blockquote><dl><dt>Core expertise</dt><dd>{profile.person.primarySkill}</dd><dt>Drawn to</dt><dd>{profile.person.taste}</dd><dt>Pushes back on</dt><dd>{profile.person.dislikes}</dd><dt>Blind spot</dt><dd>{profile.person.blindSpot}</dd></dl><div className="profile-skills">Every personality uses grill-me and grilling. Exa research is available when configured.</div><div className="profile-actions"><button onClick={()=>{const p=profile;setProfile(null);enter(p.room);}}><Users size={16}/> Join room discussion</button><button className="private-action" onClick={()=>{const p=profile;setProfile(null);setPrivateChat(p);}}><Lock size={15}/> Talk privately</button></div></>}</DialogContent></Dialog>
  <Dialog open={!!privateChat} onOpenChange={open=>{if(!open)setPrivateChat(null);}}><DialogContent className="private-chat-dialog">{privateChat&&<><div className="private-heading"><span className="portrait" style={{background:privateChat.person.color}}>{privateChat.person.avatar}</span><div><DialogTitle>{privateChat.person.name}</DialogTitle><DialogDescription>{privateChat.person.archetype} · {privateChat.room.name}</DialogDescription></div></div><div className="privacy-note"><Lock size={12}/> Just you and {privateChat.person.name}. The room discussion stays separate.</div><ConversationPanel key={threadKey(privateChat.room.id,privateChat.person.id)} engine={discussion(privateChat.room,privateChat.person)} room={privateChat.room} person={privateChat.person} live={live} onProfile={()=>{}} onSave={text=>{save(privateChat.room,text,privateChat.person);setPrivateChat(null);}}/></>}</DialogContent></Dialog>
  </main>;
 }

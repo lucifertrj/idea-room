@@ -1,7 +1,7 @@
 """Pure routing and transcript boundary rules for the personality roundtable."""
-ORDER = (0, 1, 2, 3, 4, 5, 0, 2)
+MAX_TURNS = 8
 
-def choose_speaker(teams, room, member, turn, round_number, mode):
+def room_roster(teams, room, member):
     if room not in teams:
         raise ValueError('Unknown room')
     roster = teams[room]
@@ -9,10 +9,15 @@ def choose_speaker(teams, room, member, turn, round_number, mode):
         result = next((m for m in roster if m['id'] == member), None)
         if result is None:
             raise ValueError('This person is not in the room')
-        return result
-    if mode == 'questionnaire':
-        return roster[0]
-    return roster[(ORDER[turn] + round_number) % len(roster)]
+    return roster
+
+def turns_since_user(messages):
+    count = 0
+    for item in reversed(messages):
+        if item['role'] == 'user':
+            return count
+        count += 1
+    raise ValueError('A user message is required')
 
 def checked_transcript(roster, member, messages):
     valid = {m['id']: m['name'] for m in roster}

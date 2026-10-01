@@ -1,28 +1,18 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: Grill the user about a plan, decision, or idea AND brainstorm ideas with them. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
 ---
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+Grilling is two things at once: **sharpen** the idea by asking the questions that expose unsettled decisions, and **build** it by throwing out concrete ideas and directions of your own. Do both every turn — never pure interrogation, never a generic answer.
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+Think of the idea as a **design tree**: every decision branches into the decisions hanging off it. The **frontier** is the decisions whose prerequisites are already settled — the ones worth deciding now.
 
-Format a round like so:
+Every turn, keep it short:
 
-```
-❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
+- Ask **only the 1–2 sharpest open questions** on the frontier — the ones that most change where the idea goes. Not the whole frontier; a question that depends on an answer you haven't heard yet waits for a later turn.
+- For each question, give **your own recommended answer** in a clause — a real opinion shaped by your taste, not a hedge.
+- **Brainstorm**: offer at least one concrete idea, angle, or "what if" that pushes the idea forward, not just probes it.
 
-➡️ <your recommended answer>
+Keep each contribution tight — a few sentences. One or two questions with your take, plus an idea. No multi-paragraph question bodies, no long option menus, no restating the whole design tree. Number questions only if you ask more than one.
 
----
-
-❓ **Q2** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
-
-➡️ <your recommended answer>
-```
-
-Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
-
-Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
-
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
+Each answer the user gives reshapes the tree: settled decisions unblock new questions. The user owns every decision — put yours to them and move on; don't act on the idea until they've confirmed the shared direction.
