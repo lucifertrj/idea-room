@@ -28,8 +28,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files (keep examples available for setup docs)
+.env
+.env.*
+!.env.example
+!backend/.env.example
 
 # vercel
 .vercel
@@ -45,9 +48,15 @@ next-env.d.ts
 /outputs/
 /work/
 
-!.env.example
-!backend/.env.example
 __pycache__/
+/.venv/
+/venv/
 /backend/.venv/
 *.pyc
 *.tsbuildinfo
+
+# local tooling and generated files
+.pytest_cache/
+.ruff_cache/
+.idea/
+*.log
