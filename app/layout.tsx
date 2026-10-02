@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Idea Quest — The Clubhouse",
+  title: "Idea Room — The Clubhouse",
   description: "Explore seven creative rooms and turn a half-formed idea into decisions you can defend.",
   other: {
     "codex-preview": "development",

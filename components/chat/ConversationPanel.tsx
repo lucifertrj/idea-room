@@ -76,7 +76,7 @@ export default function ConversationPanel({engine,room,person,live,onProfile,onS
    })}
 
    {!state.messages.some(m=>m.role==='user')&&<div className="prompts">
-     <div className="prompts-label">▶ SELECT AN IDEA QUEST:</div>
+     <div className="prompts-label">▶ SELECT AN IDEA ROOM:</div>
      {room.prompts.map(p=>(
        <button key={p} className="pixel-prompt-btn" onClick={()=>engine.enqueue(p,person?.name??'The whole room')}>
          <span>{p}</span>

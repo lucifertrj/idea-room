@@ -79,7 +79,7 @@ export const DEFAULT_THEME_ID: ThemeId = 'cosmic';
 export function getStoredTheme(): ThemeId {
   if (typeof window === 'undefined') return DEFAULT_THEME_ID;
   try {
-    const saved = localStorage.getItem('ideaquest_theme') as ThemeId;
+    const saved = localStorage.getItem('idearoom_theme') as ThemeId;
     if (saved && THEMES.some(t => t.id === saved)) {
       return saved;
     }
@@ -90,7 +90,7 @@ export function getStoredTheme(): ThemeId {
 export function setStoredTheme(themeId: ThemeId): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem('ideaquest_theme', themeId);
+    localStorage.setItem('idearoom_theme', themeId);
     document.documentElement.setAttribute('data-theme', themeId);
     if (document.body) {
       document.body.setAttribute('data-theme', themeId);

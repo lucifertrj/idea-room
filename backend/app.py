@@ -1,4 +1,4 @@
-"""Idea Quest room teams. Each specialist receives compulsory grilling skills."""
+"""Idea Room room teams. Each specialist receives compulsory grilling skills."""
 import asyncio
 import hmac
 import json
@@ -41,7 +41,7 @@ class ChatRequest(BaseModel):
     round: int = Field(default=0, ge=0, le=10000)
     messages: list[ChatMessage] = Field(min_length=1, max_length=160)
 
-app = FastAPI(title='Idea Quest teams')
+app = FastAPI(title='Idea Room teams')
 logger = logging.getLogger(__name__)
 
 class RoutingDecision(BaseModel):
@@ -59,7 +59,7 @@ def build_coordinator(room: str, roster: list[dict], mode: str):
     expertise = [{key: member[key] for key in ('id', 'name', 'role', 'primarySkill')} for member in roster]
     return Agent(
         name=f'{room} coordinator',
-        model=openai_model(reasoning_effort=os.getenv('OPENAI_ROUTER_EFFORT', 'minimal'), model_id=os.getenv('OPENAI_ROUTER_MODEL') or None),
+        model=openai_model(reasoning_effort=os.getenv('OPENAI_ROUTER_EFFORT', 'low'), model_id=os.getenv('OPENAI_ROUTER_MODEL') or None),
         output_schema=RoutingDecision,
         instructions=[
             'You coordinate specialists. You do not write their replies. Select the single most relevant expert for the current unresolved task, or finish the discussion.',
@@ -109,6 +109,7 @@ def build_agent(room: str, member: dict, mode: str):
             'Runtime adapter: upstream Skill calls mean get_skill_instructions. Grilling instructions are already loaded. No sub-agent tool is available: perform research with Exa. Return questionnaire Markdown for browser export, never write or send it.',
             ('Load to-questionnaire now. Establish recipient and missing answers in separate exchanges before drafting. Use prior answers from this conversation.' if mode == 'questionnaire' else 'Do not draft a questionnaire unless requested.'),
             'Use readable paragraphs. Consider only this room history; no other user or room context is available.',
+            'Write in simple English words (ASD-STE100 Simplified Technical English). Do not use em-dashes. Do not use bold or italic formatting in paragraphs, headings, or sentences.',
         ],
         markdown=True,
     )

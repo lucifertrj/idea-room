@@ -1,4 +1,4 @@
-# Idea Quest — source package
+# Idea Room — source package
 
 A walkable pixel-art clubhouse with seven niches and six expert personalities per room. Navigation uses Content, Technical, Sports, Fashion, Travel, Gaming & Anime, and Music; animal-movement names label the conversations.
 
@@ -40,4 +40,4 @@ Follow `backend/README.md` to deploy the Python Agno service. Every one of the 4
 
 Live agents need a separately deployed backend and credentials. Histories and notebook entries last for the browser visit; export before reloading. Threads stop before the message limit rather than silently dropping context. A burst pauses after 24 agent turns. Private and group histories stay separate. Demo responses illustrate the interaction and are not live reasoning.
 
-This package includes tracked source and assets, not installed dependencies, build output, credentials, or Git history. `.openai/hosting.json` identifies the existing Idea Quest Site; use your own project identity if deploying a separate copy.
+This package includes tracked source and assets, not installed dependencies, build output, credentials, or Git history. `.openai/hosting.json` identifies the existing Idea Room Site; use your own project identity if deploying a separate copy.
