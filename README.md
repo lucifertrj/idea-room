@@ -2,7 +2,7 @@
 
 A pixel-art clubhouse with seven rooms and six expert personalities per room. Users can join a group discussion, queue messages between agent turns, or open a private chat.
 
-<video src="https://github.com/lucifertrj/idea-room/raw/main/public/assets/launch_video.mp4" controls muted playsinline width="100%"></video>
+https://github.com/user-attachments/assets/d4964d23-a74f-47c4-93dc-9291b5a6d786
 
 **Current architecture:** an Agno/OpenAI coordinator selects the relevant expert first, delegates follow-ups from the shared transcript, and stops when appropriate. Tools used: Agent Skills: grill-me, grilling and to-questionnarire and Exa Search (backend)
 
