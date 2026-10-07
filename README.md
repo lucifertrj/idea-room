@@ -2,6 +2,8 @@
 
 A pixel-art clubhouse with seven rooms and six expert personalities per room. Users can join a group discussion, queue messages between agent turns, or open a private chat.
 
+<video src="public/assets/launch_video.mp4" controls muted playsinline width="100%"></video>
+
 **Current architecture:** an Agno/OpenAI coordinator selects the relevant expert first, delegates follow-ups from the shared transcript, and stops when appropriate. Tools used: Agent Skills: grill-me, grilling and to-questionnarire and Exa Search (backend)
 
 ## Requirements
@@ -123,8 +125,8 @@ With Python 3.12 and the backend requirements installed locally:
 AGNO_TELEMETRY=false python3 -m unittest discover -s backend/tests -v
 ```
 
-## Deploy
+## Demo video
 
-Deploy the backend container to an HTTPS container host with the four backend environment variables. Configure the frontend's server-side `AGNO_API_URL` to that HTTPS origin and `AGNO_API_TOKEN` to the matching secret. Publish the frontend through Sites.
-
-A hosted frontend cannot reach the backend at your laptop's `127.0.0.1`. The included `.openai/hosting.json` belongs to the existing Idea Room Site; use your own Site identity for a separate deployment.
+<a href="https://www.youtube.com/watch?v=0m2E6lWaiOA" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.youtube.com/vi/0m2E6lWaiOA/hqdefault.jpg" alt="Idea Room demo video thumbnail" width="640" />
+</a>
